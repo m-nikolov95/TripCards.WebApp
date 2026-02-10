@@ -1,4 +1,4 @@
-.mainContainer {
+.errorContainer {
     background-color: #ffd2d2;
     border-width: 1px;
     border-style: solid;
@@ -8,6 +8,7 @@
     flex-direction: row;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .errorText {
@@ -15,11 +16,11 @@
     margin-right: 20px;
 }
 
-.buttonContainer {
+.errorButtonContainer {
     margin-right: 10px;
 }
 
-.button {
+.closeErrorButton {
     background-color: transparent;
     border-width: 1px;
     border-style: solid;

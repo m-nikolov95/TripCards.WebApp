@@ -6,10 +6,10 @@ import './ErrorAlertComponentStyles.css';
 
 export function ErrorAlertComponent(props: ErrorAlertComponentProps): JSX.Element {
     return (
-        <div className='mainContainer'>
+        <div className='errorContainer'>
             <p className='errorText'>{props.error}</p>
-            <div className='buttonContainer'>
-                <button className='button' onClick={props.clearErrorAlert}>X</button>
+            <div className='errorButtonContainer'>
+                <button className='closeErrorButton' onClick={props.clearErrorAlert}>X</button>
             </div>
         </div>
     )
