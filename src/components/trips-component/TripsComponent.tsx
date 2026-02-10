@@ -1,12 +1,16 @@
-import { JSX, useContext, useEffect, useState } from 'react'
+import React, { JSX, useContext, useEffect, useState } from 'react'
 
 import { MockApiService } from '../../services/mock-api-service';
 
 import { Context } from '../../context/Context';
 
+import { TripCardComponent } from '../trip-card-component/TripCardComponent';
+
 import { useErrorHandler } from '../../hooks/useErrorHandler';
 
 import { TripViewModel } from '../../models/view-models/trip-view-model';
+
+import './TripsComponentStyles.css';
 
 export function TripsComponent(): JSX.Element {
     let context = useContext(Context);
@@ -45,7 +49,21 @@ export function TripsComponent(): JSX.Element {
             {
                 showGeneralErrorTemplate()
             }
-            TripsComponent
+            {
+                tripsState !== null &&
+                    tripsState !== undefined &&
+                    tripsState.length > 0 ?
+                    <div className='tripsGrid'>
+                        {
+                            tripsState.map((trip: TripViewModel) => {
+                                return (
+                                    <TripCardComponent key={trip.id} {...trip} />
+                                )
+                            })
+                        }
+                    </div> :
+                    <React.Fragment />
+            }
         </div>
     )
 }
