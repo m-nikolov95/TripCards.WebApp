@@ -2,7 +2,7 @@ import React, { JSX } from 'react';
 
 import { SpinnerComponentProps } from '../../../props/spinner-component-props';
 
-import spinner from '../../../images/Spinner_I.gif';
+import spinner from '../../../images/Spinner.gif';
 
 import './LoadingSpinnerComponentStyles.css';
 
@@ -10,10 +10,10 @@ export function LoadingSpinnerComponent(props: SpinnerComponentProps): JSX.Eleme
     return props.shouldShowLoadingSpinner ?
         (
             <div className='spinnerModal'>
-                <img alt='' src={spinner} />
+                <img alt='Loading...' width={70} height={70} src={spinner} />
             </div>
         ) :
         <React.Fragment />;
 }
 
-export default LoadingSpinnerComponent
+export default LoadingSpinnerComponent; 

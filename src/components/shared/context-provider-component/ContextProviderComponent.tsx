@@ -44,6 +44,7 @@ export function ContextProviderComponent(props: AppProps): JSX.Element {
         contextState.isContextInitialized ?
             <Context.Provider
                 value={{
+                    shouldShowLoadingSpinner: contextState.shouldShowLoadingSpinner,
                     showLoadingSpinner: () => showLoadingSpinner(),
                     hideLoadingSpinner: () => hideLoadingSpinner(),
                     showLoadingSpinnerTemplate: () => showLoadingSpinnerTemplate()

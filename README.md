@@ -1,46 +1,189 @@
-# Getting Started with Create React App
+# Software Engineer I Candidate Project — “Trip Card Explorer”
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Build a small React web app that displays a list of “trip cards” fetched from a mock JSON API.
 
-## Available Scripts
+# Features & Scope
 
-In the project directory, you can run:
+1. Data fetching & state
+    ○ Fetch data from a local data.json file (provided) that returns an array of
+    objects with fields:
+    { id, name, image, short_description, long_description,
+    rating }
+    ○ Display all items in a responsive grid of cards.
+    ○ Handle loading and error states gracefully.
+
+2. Card component
+    ○ Each card should show the image, name, rating (stars or numeric), and a short
+    description.
+    ○ Add a “More Info” button that opens a modal with full details.
+
+3. Search & filter
+    ○ Provide a search input to filter trips by name.
+    ○ Add a simple “Sort by Rating” toggle.
+
+4. Styling & structure
+    ○ Use CSS (SASS)
+    ○ Focus on readable, maintainable component structure and modern, clean layout
+
+## Table of Contents
+- [How to Run the App](#how-to-run-the-app)
+- [Design Decisions](#design-decisions)
+- [Trade-offs](#trade-offs)
+
+---
+
+## How to Run the App
+
+### Prerequisites
+- **Node.js** (v16 or higher recommended)
+- **npm** (comes with Node.js)
+
+### Installation
+
+1. Clone the repository
+
+2.Install dependencies:
+    npm install
+
+3. In the project directory, you can run:
 
 ### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Design Decisions
 
-### `npm test`
+#### 1. **React with TypeScript**
+- Chose **TypeScript** for type safety, and better code maintainability
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 2. **Context API for Global State**
+- Implemented light weight **React Context** for managing global state (loading spinner)
 
-### `npm run build`
+#### 3. **Custom Hooks Pattern**
+- Created useErrorHandler hook for error handling logic
+- Assures reusability and separation of concerns
+- Allows multiple components to share error handling
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 4. **Functional Components with Hooks**
+- Used useState, useEffect, useContext for state management and side effects
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### 5. **Component Structure**
+- Organized components by feature and shared utilities:
+  - trips-component: Display trips
+  - trip-card-component: Individual trip display
+  - shared: Reusable components (ContextProvider, Modal, LoadingSpinner, ErrorAlert)
+- CSS files stored with their components
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### 6. **Mock API Service**
+- Implemented MockApiService to simulate API calls
 
-### `npm run eject`
+#### 7. **Portal-based Modals**
+- Used createPortal for modal rendering
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### 8. **Filtering**
+- Search and sort functionality managed locally in TripsComponent
+- Maintains initial data for filtering operations
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Trade-offs
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 1. Context API vs. Redux/Zustand
+**Decision:** Context API
 
-## Learn More
+**Pros:**
+- Built into React, light, simple, no additional dependencies
+- Sufficient for current use case (loading spinner state)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Cons:**
+- Not ideal for more complex state management
+- Can cause unnecessary re-renders if not structured carefully
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Consideration:** For a larger application with more complex state, a more refined state management library is required (Redux, Zustand)
+
+---
+
+### 2. Local State vs. Centralized State for Trips Data
+**Decision:** Local state in TripsComponent
+
+**Pros:**
+- Simpler implementation
+- No overhead of global state management
+- Data is only needed in one component
+
+**Cons:**
+- Cannot share trip data with other components easily
+- Would need refactoring if data becomes globally required
+
+**Consideration:** Current scope justifies local state, but future features may require migration to global state.
+
+---
+
+### 4. CSS vs. Bootstrap & MUI
+**Decision:** Plain CSS files co-located with components
+
+**Pros:**
+- No additional dependencies
+- No performance cost
+- Smaller bundle size
+- Easy to debug
+
+**Cons:**
+- Manual styling
+- Nothing out of the box and ready to use
+- Takes more time and effort
+
+---
+
+### 7. Separate Error Component vs. Native Browser Alerts
+**Decision:** Custom ErrorAlertComponent
+
+**Pros:**
+- Consistent UI/UX across the application
+- Customizable styling and behavior
+- Non-blocking user experience
+- Dismissible errors
+
+**Cons:**
+- Additional component to maintain
+- More complex than simple alerts
+
+---
+
+## Future Enhancements
+
+Potential improvements to consider:
+- Add Error Boundary for rendering errors
+- Add pagination for large datasets
+- Implement real API integration
+- Add unit tests
+- Implement more filtering options
+
+---
+
+## Technology Stack
+
+- **React** 19.2.4
+- **TypeScript** 4.9.5
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── shared/           # Reusable UI components
+│   ├── trip-card-component/
+│   └── trips-component/
+├── context/              # React Context definitions
+├── data/                 # Mock data
+├── hooks/                # Custom hooks
+├── models/               # Models
+├── props/                # Props
+├── services/             # API services
+└── state/                # State
+```
+
+---

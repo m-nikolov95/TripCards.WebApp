@@ -10,6 +10,8 @@ import { useErrorHandler } from '../../hooks/useErrorHandler';
 
 import { TripViewModel } from '../../models/view-models/trip-view-model';
 
+import { TripsState } from '../../state/trips-state';
+
 import './TripsComponentStyles.css';
 
 export function TripsComponent(): JSX.Element {
@@ -17,7 +19,8 @@ export function TripsComponent(): JSX.Element {
 
     let { handleFormHttpErrorAsync, showGeneralErrorTemplate } = useErrorHandler();
 
-    let [tripsState, setTripsState] = useState<TripViewModel[]>();
+    let [tripsState, setTripsState] = useState<TripsState>();
+    let [isSortedByRatingState, setIsSortedByRatingState] = useState(false);
 
     useEffect((): void => {
         (async () => {
@@ -31,7 +34,10 @@ export function TripsComponent(): JSX.Element {
 
             let trips = await MockApiService.mockGetTripsAsync();
 
-            setTripsState(trips);
+            setTripsState({
+                initialTrips: trips,
+                filteredTrips: trips
+            });
         }
         catch (error) {
             handleFormHttpErrorAsync('An error has occurred. Please try again later.');
@@ -41,31 +47,72 @@ export function TripsComponent(): JSX.Element {
         }
     }
 
+
+    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        let searchTerm = event.target.value.toLowerCase();
+
+        if (tripsState !== null && tripsState !== undefined) {
+            let filteredTrips = tripsState.initialTrips.filter(trip =>
+                trip.name.toLowerCase().includes(searchTerm)
+            );
+
+            setTripsState({
+                ...tripsState,
+                filteredTrips: filteredTrips
+            });
+        }
+    }
+
+    let handleSortButtonClick = (): void => {
+        setIsSortedByRatingState(prevState => !prevState);
+    }
+
+    let trips = isSortedByRatingState &&
+        tripsState?.filteredTrips !== null &&
+        tripsState?.filteredTrips !== undefined ?
+        [...tripsState.filteredTrips].sort((a, b) => b.rating - a.rating) :
+        tripsState?.filteredTrips;
+
     return (
         <div>
             {
                 context.showLoadingSpinnerTemplate()
             }
             {
-                showGeneralErrorTemplate()
-            }
-            {
-                tripsState !== null &&
-                    tripsState !== undefined &&
-                    tripsState.length > 0 ?
-                    <div className='tripsGrid'>
+                !context.shouldShowLoadingSpinner ?
+                    <React.Fragment>
                         {
-                            tripsState.map((trip: TripViewModel) => {
-                                return (
-                                    <TripCardComponent key={trip.id} {...trip} />
-                                )
-                            })
+                            showGeneralErrorTemplate()
                         }
-                    </div> :
+                        <div className='filterContainer'>
+                            <input className='searchInput' placeholder='Search...' onChange={handleSearchInputChange} />
+                            <div className='filterButtonContainer'>
+                                <button className='filterButton'
+                                    onClick={handleSortButtonClick} aria-pressed={isSortedByRatingState}>
+                                    {isSortedByRatingState ? 'Unsort by Rating' : 'Sort by Rating'}
+                                </button>
+                            </div>
+                        </div >
+                        {
+                            trips !== null &&
+                                trips !== undefined &&
+                                trips.length > 0 ?
+                                <div className='tripsGrid'>
+                                    {
+                                        trips.map((trip: TripViewModel) => {
+                                            return (
+                                                <TripCardComponent key={trip.id} {...trip} />
+                                            )
+                                        })
+                                    }
+                                </div> :
+                                <React.Fragment />
+                        }
+                    </React.Fragment> :
                     <React.Fragment />
             }
         </div>
     )
 }
 
-export default TripsComponent
+export default TripsComponent;
