@@ -1,0 +1,31 @@
+.errorContainer {
+    background-color: #ffd2d2;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: red;
+    margin-bottom: 10px;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.errorText {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.errorButtonContainer {
+    margin-right: 10px;
+}
+
+.closeErrorButton {
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: red;
+    padding: 5px 10px;
+    cursor: pointer;
+}
