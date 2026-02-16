@@ -1,5 +1,3 @@
-# Software Engineer I Candidate Project — “Trip Card Explorer”
-
 Build a small React web app that displays a list of “trip cards” fetched from a mock JSON API.
 
 # Features & Scope
